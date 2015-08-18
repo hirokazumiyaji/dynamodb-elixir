@@ -14,7 +14,7 @@ defmodule DynamoDB.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :httpoison]]
   end
 
   # Dependencies can be Hex packages:
@@ -28,6 +28,7 @@ defmodule DynamoDB.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [{:poison, "~> 1.4.0"},
-     {:httpoison, "~>0.7.2"}]
+     {:httpoison, "~> 0.7.0"},
+     {:aws_auth, "~> 0.2.0"}]
   end
 end

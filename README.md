@@ -1,5 +1,5 @@
 DynamoDB Client for elixir
-======
+===
 
 Usage
 ---

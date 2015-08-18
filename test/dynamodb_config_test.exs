@@ -1,5 +1,5 @@
 defmodule DynamoDB.ConfigTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "new host port" do
     config = DynamoDB.Config.new("127.0.0.1", 8080, true)

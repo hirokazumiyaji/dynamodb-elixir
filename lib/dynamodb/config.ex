@@ -1,11 +1,5 @@
 defmodule DynamoDB.Config do
 
-  #@api_version = "2012-08-10"
-  #@default_region_name = "us-east-1"
-  #@default_region_endpoint = "dynamodb.us-east-1.amazonaws.com"
-  #@service_name = "DynamoDB"
-  #@target_refix = "DynamoDB_20120810"
-
   def new(access_key_id, secret_access_key, region, true) do
     %{
       access_key_id: access_key_id,

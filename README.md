@@ -1,6 +1,8 @@
 DynamoDB Client for elixir
 ===
 
+[![Build Status](https://travis-ci.org/hirokazumiyaji/dynamodb.svg?branch=master)](https://travis-ci.org/hirokazumiyaji/dynamodb)
+
 Usage
 ---
 * DynamoDB

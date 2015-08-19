@@ -1,29 +1,47 @@
 defmodule DynamoDB.ConfigTest do
   use ExUnit.Case, async: true
 
-  test "new host port" do
-    config = DynamoDB.Config.new("127.0.0.1", 8080, true)
-    assert config == %{
+  test "enable host port" do
+    config = %DynamoDB.Config{is_secure: true, host: "127.0.0.1", port: 8080}
+
+    assert config == %DynamoDB.Config{
       access_key_id: "ACCESS_KEY_ID",
       secret_access_key: "SECRET_ACCESS_KEY",
       region: "us-east-1",
-      scheme: "https",
-      endpoint: "127.0.0.1:8080"}
+      is_secure: true,
+      host: "127.0.0.1",
+      port: 8080}
+    assert DynamoDB.Config.endpoint(config) == "127.0.0.1:8080"
+    assert DynamoDB.Config.url(config) == "https://127.0.0.1:8080"
 
-    config = DynamoDB.Config.new("localhost", 8000, false)
-    assert config == %{
+    config = %DynamoDB.Config{is_secure: false, host: "localhost", port: 8000}
+
+    assert config == %DynamoDB.Config{
       access_key_id: "ACCESS_KEY_ID",
       secret_access_key: "SECRET_ACCESS_KEY",
       region: "us-east-1",
-      scheme: "http",
-      endpoint: "localhost:8000"}
+      is_secure: false,
+      host: "localhost",
+      port: 8000}
+    assert DynamoDB.Config.endpoint(config) == "localhost:8000"
+    assert DynamoDB.Config.url(config) == "http://localhost:8000"
+  end
 
-    config = DynamoDB.Config.new("12345", "12345678910", "us-east-1", true)
-    assert config == %{
+  test "disable host port" do
+    config = %DynamoDB.Config{
       access_key_id: "12345",
       secret_access_key: "12345678910",
-      region: "us-east-1",
-      scheme: "https",
-      endpoint: "dynamodb.us-east-1.amazonaws.com"}
+      region: "us-west-1",
+      is_secure: true}
+
+    assert config == %DynamoDB.Config{
+      access_key_id: "12345",
+      secret_access_key: "12345678910",
+      region: "us-west-1",
+      is_secure: true,
+      host: nil,
+      port: nil}
+    assert DynamoDB.Config.endpoint(config) == "dynamodb.us-west-1.amazonaws.com"
+    assert DynamoDB.Config.url(config) == "https://dynamodb.us-west-1.amazonaws.com"
   end
 end

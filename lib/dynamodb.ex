@@ -130,6 +130,39 @@ defmodule DynamoDB do
     @type t :: %WriteRequest{DeleteRequest: DeleteRequest, PutRequest: PutRequest}
   end
 
+  defmodule Config do
+    defstruct access_key_id: "ACCESS_KEY_ID", secret_access_key: "SECRET_ACCESS_KEY", region: "us-east-1", is_secure: true, host: nil, port: nil
+    @type t :: %Config{access_key_id: binary, secret_access_key: binary, region: binary, is_secure: boolean, host: reference, port: reference}
+
+    def url(%Config{region: region, is_secure: true, host: nil, port: nil}) do
+      e = endpoint(%Config{region: region, host: nil, port: nil})
+      "https://#{e}"
+    end
+
+    def url(%Config{region: region, is_secure: false, host: nil, port: nil}) do
+      e = endpoint(%Config{region: region, host: nil, port: nil})
+      "http://#{e}"
+    end
+
+    def url(%Config{is_secure: true, host: host, port: port}) do
+      e = endpoint(%Config{host: host, port: port})
+      "https://#{e}"
+    end
+
+    def url(%Config{is_secure: false, host: host, port: port}) do
+      e = endpoint(%Config{host: host, port: port})
+      "http://#{e}"
+    end
+
+    def endpoint(%Config{region: region, host: nil, port: nil}) do
+      "dynamodb.#{region}.amazonaws.com"
+    end
+
+    def endpoint(%Config{host: host, port: port}) do
+      "#{host}:#{port}"
+    end
+  end
+
   use DynamoDB.BatchGetItem
   use DynamoDB.BatchWriteItem
   use DynamoDB.CreateTable

@@ -3,22 +3,15 @@ defmodule DynamoDB.Utils do
   @service "dynamodb"
   @target_prefix "DynamoDB_20120810"
 
+  alias DynamoDB.Config
+
   def post(config, action, payload) do
-    url = gen_url(config)
+    url = DynamoDB.Config.url(config)
     payload = payload |> encode
     headers = gen_headers(config, action)
 
-    auth_header = AWSAuth.sign_authorization_header(
-      config[:access_key],
-      config[:secret_access_key],
-      @http_method,
-      url,
-      config[:region],
-      @service,
-      headers,
-      payload)
-
-    headers = headers |> Dict.put("Authorization", auth_header)
+    headers = headers
+      |> Dict.put("Authorization", auth_signature(config, url, headers, payload))
 
     case HTTPoison.post(url, payload, headers) do
       {:ok, %HTTPoison.Response{status_code: 200, headers: response_headers, body: response_body}} ->
@@ -43,8 +36,16 @@ defmodule DynamoDB.Utils do
     value |> Poison.decode!
   end
 
-  defp gen_url(config) do
-    "#{config[:scheme]}://#{config[:endpoint]}"
+  defp auth_signature(config, url, headers, payload) do
+    AWSAuth.sign_authorization_header(
+      config[:access_key],
+      config[:secret_access_key],
+      @http_method,
+      url,
+      config[:region],
+      @service,
+      headers,
+      payload)
   end
 
   defp x_amz_target(action) do
@@ -54,7 +55,7 @@ defmodule DynamoDB.Utils do
   defp gen_headers(config, action) do
     %{
       "X-Amz-Target" => x_amz_target(action),
-      "Host" => config[:endpoint],
+      "Host" => DynamoDB.Config.endpoint(config),
       "Content-Type" => "application/x-amz-json-1.0"
     }
   end

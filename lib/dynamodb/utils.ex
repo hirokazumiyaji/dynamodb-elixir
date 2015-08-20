@@ -38,11 +38,11 @@ defmodule DynamoDB.Utils do
 
   defp auth_signature(config, url, headers, payload) do
     AWSAuth.sign_authorization_header(
-      config[:access_key],
-      config[:secret_access_key],
+      config.access_key_id,
+      config.secret_access_key,
       @http_method,
       url,
-      config[:region],
+      config.region,
       @service,
       headers,
       payload)

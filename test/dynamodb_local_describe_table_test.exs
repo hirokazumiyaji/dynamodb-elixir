@@ -4,7 +4,10 @@ defmodule DynamoDBLocalDescribeTableTest do
   setup_all do
     table_name = "DescribeTable"
     not_found_table_name = "DescribeTable2"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     DynamoDB.delete_table(config, not_found_table_name)
 
@@ -29,8 +32,10 @@ defmodule DynamoDBLocalDescribeTableTest do
   test "describe table" do
     table_name = "DescribeTable"
     not_found_table_name = "DescribeTable2"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
-
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     data = DynamoDB.describe_table(config, table_name)
     assert data["TableName"] == table_name

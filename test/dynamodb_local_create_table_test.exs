@@ -4,7 +4,10 @@ defmodule DynamoDBLocalCreateTableTest do
   setup_all do
     table_name1 = "Users"
     table_name2 = "Thread"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     DynamoDB.delete_table(config, table_name1)
     DynamoDB.delete_table(config, table_name2)
@@ -19,7 +22,10 @@ defmodule DynamoDBLocalCreateTableTest do
   test "create table" do
     table_name1 = "Users"
     table_name2 = "Thread"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     assert DynamoDB.create_table(
       config,

@@ -8,7 +8,7 @@ Usage
 * DynamoDB
 
 ```
-config = DynamoDB.Config.new("ACCESS_KEY", "SECRET_ACCESS_KEY", "us-west-1")
+config = %DynamoDB.Config{access_key_id: "ACCESS_KEY", secret_access_key: "SECRET_ACCESS_KEY", region: "us-west-1")
 DynamoDB.create_table(
   config,
   [
@@ -28,7 +28,7 @@ DynamoDB.get_item(config, %{Id: %{S: "12345"}}, "Example")
 * DynamoDB-Local
 
 ```
-config = DynamoDB.Config.new("127.0.0.1", 8080)
+config = %DynamoDB.Config{is_secure: false, host: "127.0.0.1", port: 8080}
 DynamoDB.create_table(
   config,
   [

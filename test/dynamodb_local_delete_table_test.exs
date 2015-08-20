@@ -3,7 +3,10 @@ defmodule DynamoDBLocalDeleteTableTest do
 
   setup_all do
     table_name = "DeleteTable"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     DynamoDB.create_table(
       config,
@@ -21,7 +24,10 @@ defmodule DynamoDBLocalDeleteTableTest do
 
   test "delete table" do
     table_name = "DeleteTable"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     assert DynamoDB.delete_table(config, table_name) == :ok
 

@@ -3,7 +3,10 @@ defmodule DynamoDBLocalGetItemTest do
 
   setup_all do
     table_name = "GetItem"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     DynamoDB.create_table(
       config,
@@ -25,7 +28,10 @@ defmodule DynamoDBLocalGetItemTest do
 
   test "get item" do
     table_name = "GetItem"
-    config = DynamoDB.Config.new(System.get_env("DYNAMODB_HOST"), System.get_env("DYNAMODB_PORT"), false)
+    config = %DynamoDB.Config{
+      is_secure: false,
+      host: System.get_env("DYNAMODB_HOST"),
+      port: System.get_env("DYNAMODB_PORT")}
 
     key = %{
       Id: %{
